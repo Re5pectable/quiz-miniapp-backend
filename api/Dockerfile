@@ -1,7 +1,7 @@
 FROM python:3.11
 
 # set work directory
-WORKDIR /usr/app/api_dashboard
+WORKDIR /usr/app/api
 
 # set env variables
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -27,4 +27,4 @@ USER apiuser
 
 EXPOSE 8000
 
-CMD ["python", "-m", "api_dashboard"]
+CMD ["python", "-m", "api"]
