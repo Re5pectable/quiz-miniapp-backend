@@ -21,7 +21,7 @@ class RepositoryMixin:
             detail = str(e.orig.args[0])
             raise ValueError(detail.split("\n")[1])
 
-    async def update(self) -> None:
+    async def db_update(self) -> None:
         try:
             orm_cls = self.Meta.orm_model
             ignore_fields = self.Meta.ignore_fields if hasattr(self.Meta, 'ignore_fields') else {}

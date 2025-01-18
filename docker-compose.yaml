@@ -18,6 +18,9 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME}
 
+      API_LOGIN: ${API_LOGIN}
+      API_PASSWORD: ${API_PASSWORD}
+
   quiz-db:
     container_name: quiz-db
     image: postgres:16

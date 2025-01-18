@@ -1,8 +1,8 @@
 """init
 
-Revision ID: f7719b2bb6a1
+Revision ID: 3c293d3d4983
 Revises: 
-Create Date: 2025-01-18 20:36:44.860800
+Create Date: 2025-01-18 21:13:58.118629
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = 'f7719b2bb6a1'
+revision: str = '3c293d3d4983'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -31,6 +31,8 @@ def upgrade() -> None:
     sa.Column('config', postgresql.JSONB(astext_type=sa.Text()), nullable=True),
     sa.Column('point_fields', postgresql.JSONB(astext_type=sa.Text()), nullable=True),
     sa.Column('logo_url', sa.String(), nullable=True),
+    sa.Column('is_active', sa.Boolean(), nullable=True),
+    sa.Column('is_deleted', sa.Boolean(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('games',
@@ -51,6 +53,7 @@ def upgrade() -> None:
     sa.Column('text', sa.String(), nullable=True),
     sa.Column('pic_url', sa.String(), nullable=True),
     sa.Column('order', sa.Integer(), nullable=True),
+    sa.Column('is_deleted', sa.Boolean(), nullable=True),
     sa.ForeignKeyConstraint(['quiz_id'], ['quizes.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -88,8 +91,9 @@ def upgrade() -> None:
     sa.Column('quiz_question_id', sa.UUID(), nullable=True),
     sa.Column('text', sa.String(), nullable=True),
     sa.Column('note', sa.String(), nullable=True),
-    sa.Column('points', sa.String(), nullable=True),
+    sa.Column('points', postgresql.JSONB(astext_type=sa.Text()), nullable=True),
     sa.Column('order', sa.Integer(), nullable=True),
+    sa.Column('is_deleted', sa.Boolean(), nullable=True),
     sa.ForeignKeyConstraint(['quiz_question_id'], ['quiz_questions.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

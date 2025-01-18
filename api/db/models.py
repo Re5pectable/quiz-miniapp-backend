@@ -19,6 +19,8 @@ class QuizOrm(Base):
     config = sa.Column(postgresql.JSONB())
     point_fields = sa.Column(postgresql.JSONB())
     logo_url = sa.Column(sa.String())
+    is_active = sa.Column(sa.Boolean(), default=False)
+    is_deleted = sa.Column(sa.Boolean(), default=False)
 
 
 class QuizQuestionOrm(Base):
@@ -30,9 +32,10 @@ class QuizQuestionOrm(Base):
     text = sa.Column(sa.String())
     pic_url = sa.Column(sa.String())
     order = sa.Column(sa.Integer())
+    is_deleted = sa.Column(sa.Boolean(), default=False)
 
 
-class QuizQuestionsAnswer(Base):
+class QuizQuestionAnswerOrm(Base):
     __tablename__ = "quiz_question_answers"
     id = sa.Column(postgresql.UUID(as_uuid=True), primary_key=True, default=uuid4)
     created_at = sa.Column(sa.DateTime(), server_default=sa.func.now())
@@ -40,8 +43,9 @@ class QuizQuestionsAnswer(Base):
     quiz_question_id = sa.Column(postgresql.UUID(as_uuid=True), sa.ForeignKey("quiz_questions.id"), index=True)
     text = sa.Column(sa.String())
     note = sa.Column(sa.String())
-    points = sa.Column(sa.String())
+    points = sa.Column(postgresql.JSONB())
     order = sa.Column(sa.Integer())
+    is_deleted = sa.Column(sa.Boolean(), default=False)
 
 
 class QuizResultOrm(Base):
@@ -54,6 +58,7 @@ class QuizResultOrm(Base):
     text = sa.Column(sa.String())
     points = sa.Column(postgresql.JSONB())
     pic_url = sa.Column(sa.String())
+    is_deleted = sa.Column(sa.Boolean(), default=False)
 
 
 class GameOrm(Base):

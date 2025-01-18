@@ -1,6 +1,12 @@
 from fastapi import FastAPI
+from .routers.private.quiz import router as quiz_router
+from .routers.private.quiz_question import router as quiz_questions_router
+from .routers.private.quiz_question_answer import router as quiz_question_answer_router
 
 app = FastAPI()
+app.include_router(quiz_router, prefix="/quiz", tags=['[Dashboard] Quiz'])
+app.include_router(quiz_questions_router, prefix="/quiz/questions", tags=['[Dashboard] Quiz Questions'])
+app.include_router(quiz_question_answer_router, prefix="/quiz/questions/answers", tags=['[Dashboard] Quiz Questions Answers'])
 
 
 # boto3.set_stream_logger(name='botocore')

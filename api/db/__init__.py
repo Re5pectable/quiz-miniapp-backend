@@ -1,7 +1,7 @@
 from .models import (
     QuizOrm,
     QuizQuestionOrm,
-    QuizQuestionsAnswer,
+    QuizQuestionAnswerOrm,
     QuizResultOrm,
     GameOrm,
     GameAnswerOrm,
@@ -17,7 +17,7 @@ __all__ = [
     "RepositoryMixin",
     "QuizOrm",
     "QuizQuestionOrm",
-    "QuizQuestionsAnswer",
+    "QuizQuestionAnswerOrm",
     "QuizResultOrm",
     "GameOrm",
     "GameAnswerOrm",
