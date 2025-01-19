@@ -2,7 +2,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, Body, Query
 
-from ...schemas.quiz_question import (
+from ..schemas.quiz_question import (
     QuizQuestionCreate,
     QuizQuestionEdit,
     QuizQuestionView,
@@ -14,7 +14,6 @@ router = APIRouter()
 
 @router.get("")
 async def get_quiz_questions(
-    _: authorized,
     quiz_id: UUID = Query(),
 ):
     return await QuizQuestionView.get_many(quiz_id=quiz_id, is_deleted=False)

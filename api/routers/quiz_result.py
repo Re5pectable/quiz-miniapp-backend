@@ -1,6 +1,6 @@
 from uuid import UUID
 from fastapi import APIRouter, Body, Query
-from ...schemas.quiz_result import QuizResultCreate, QuizResultEdit, QuizResultView
+from ..schemas.quiz_result import QuizResultCreate, QuizResultEdit, QuizResultView
 from ._auth import authorized
 
 router = APIRouter()

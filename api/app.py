@@ -1,14 +1,31 @@
 from fastapi import FastAPI
-from .routers.private.quiz import router as quiz_router
-from .routers.private.quiz_question import router as quiz_questions_router
-from .routers.private.quiz_question_answer import router as quiz_question_answer_router
-from .routers.private.quiz_result import router as quiz_result_router
+from fastapi.middleware.cors import CORSMiddleware
+
+from .routers.quiz import router as quiz_router
+from .routers.quiz_question import router as quiz_questions_router
+from .routers.quiz_question_answer import router as quiz_question_answer_router
+from .routers.quiz_result import router as quiz_result_router
 
 app = FastAPI()
-app.include_router(quiz_router, prefix="/quiz", tags=['[Dashboard] Quiz'])
-app.include_router(quiz_questions_router, prefix="/quiz/questions", tags=['[Dashboard] Quiz Questions'])
-app.include_router(quiz_question_answer_router, prefix="/quiz/questions/answers", tags=['[Dashboard] Quiz Questions Answers'])
-app.include_router(quiz_result_router, prefix="/quiz/results", tags=['[Dashboard] Quiz Results'])
+app.include_router(quiz_router, prefix="/quiz", tags=['Quiz'])
+app.include_router(quiz_questions_router, prefix="/quiz/questions", tags=['Quiz Questions'])
+app.include_router(quiz_question_answer_router, prefix="/quiz/questions/answers", tags=['Quiz Questions Answers'])
+app.include_router(quiz_result_router, prefix="/quiz/results", tags=['Quiz Results'])
+
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+    "http://0.0.0.0:8080",
+    "http://127.0.0.1:8080"
+]
+    
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # boto3.set_stream_logger(name='botocore')

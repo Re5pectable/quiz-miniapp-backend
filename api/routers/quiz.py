@@ -1,6 +1,6 @@
 from uuid import UUID
-from fastapi import APIRouter, Body
-from ...schemas.quiz import QuizCreate, QuizEdit, QuizView
+from fastapi import APIRouter, Body, Query
+from ..schemas.quiz import QuizCreate, QuizEdit, QuizView
 from ._auth import authorized
 
 router = APIRouter()
@@ -8,9 +8,16 @@ router = APIRouter()
 
 @router.get("")
 async def get_quizes(
-    _: authorized
+    # _: authorized
 ):
     return await QuizView.db_get_many(is_deleted=False)
+
+@router.get("")
+async def get_quiz(
+    # _: authorized
+    id: UUID = Query()
+):
+    return await QuizView.db_get_or_none(id=id, is_deleted=False)
 
 
 @router.post("")

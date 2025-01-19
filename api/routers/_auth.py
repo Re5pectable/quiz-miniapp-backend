@@ -4,7 +4,7 @@ from typing import Annotated
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
-from ...config import api_config
+from ..config import api_config
 
 security = HTTPBasic()
 
