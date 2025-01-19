@@ -14,6 +14,9 @@ async def __verify_points(session, **data):
     q = await session.execute(stmt)
     point_fields = q.scalars().first()
     
+    if point_fields is None:
+        raise ValueError("quiz not found.")
+    
     if any([True for point_name in data['points'].keys() if point_name not in point_fields]):
         raise ValueError("`points` keys should all be present in parent quiz `point_fields` field.")
 

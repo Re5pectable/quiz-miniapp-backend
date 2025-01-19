@@ -1,17 +1,17 @@
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel, TypeAdapter
-from . import repository
+from pydantic import BaseModel
 
 from ... import db
+from . import repository
 
 
 class QuizResultCreate(BaseModel, db.RepositoryMixin):
     quiz_id: UUID
     header: str
     text: str
-    points: dict[str:dict]
+    points: dict[str, dict]
     pic_url: str | None
 
     class Config:

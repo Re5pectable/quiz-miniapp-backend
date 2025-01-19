@@ -4,10 +4,13 @@ from ... import db
 
 
 async def __verify_points(session, **data):
-    quiz_id = data['quiz__id']
+    quiz_id = data['quiz_id']
     stmt = select(db.QuizOrm.point_fields).where(db.QuizOrm.id == quiz_id)
     q = await session.execute(stmt)
     point_fields = q.scalars().first()
+    
+    if point_fields is None:
+        raise ValueError("quiz not found.")
     
     if any([True for point_name in data['points'].keys() if point_name not in point_fields]):
         raise ValueError("`points` keys should all be present in parent quiz `point_fields` field.")
