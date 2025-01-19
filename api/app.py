@@ -5,18 +5,20 @@ from .routers.quiz import router as quiz_router
 from .routers.quiz_question import router as quiz_questions_router
 from .routers.quiz_question_answer import router as quiz_question_answer_router
 from .routers.quiz_result import router as quiz_result_router
+from .routers.session import router as session_router
 
 app = FastAPI()
 app.include_router(quiz_router, prefix="/quiz", tags=['Quiz'])
 app.include_router(quiz_questions_router, prefix="/quiz/questions", tags=['Quiz Questions'])
 app.include_router(quiz_question_answer_router, prefix="/quiz/questions/answers", tags=['Quiz Questions Answers'])
 app.include_router(quiz_result_router, prefix="/quiz/results", tags=['Quiz Results'])
+app.include_router(session_router, prefix="/session", tags=['Session'])
 
 origins = [
     "http://localhost",
     "http://localhost:8080",
     "http://0.0.0.0:8080",
-    "http://127.0.0.1:8080"
+    "http://127.0.0.1:8080",
 ]
     
 app.add_middleware(

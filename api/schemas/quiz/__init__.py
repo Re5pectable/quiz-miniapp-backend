@@ -1,1 +1,1 @@
-from .quiz import QuizCreate, QuizEdit, QuizView  # noqa
+from .quiz import QuizCreate, QuizEdit, QuizView, QuizPreview  # noqa

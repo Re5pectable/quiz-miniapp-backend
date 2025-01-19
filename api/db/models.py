@@ -59,6 +59,16 @@ class QuizResultOrm(Base):
     points = sa.Column(postgresql.JSONB())
     pic_url = sa.Column(sa.String())
     is_deleted = sa.Column(sa.Boolean(), default=False)
+    
+
+class SessionOrm(Base):
+    __tablename__ = "sessions"
+    id = sa.Column(postgresql.UUID(as_uuid=True), primary_key=True, default=uuid4)
+    created_at = sa.Column(sa.DateTime(), server_default=sa.func.now())
+    updated_at = sa.Column(sa.DateTime(), onupdate=sa.func.now())
+    tg_id = sa.Column(sa.String())
+    username = sa.Column(sa.String())
+    user_agent = sa.Column(postgresql.JSONB())
 
 
 class GameOrm(Base):
@@ -66,6 +76,7 @@ class GameOrm(Base):
     id = sa.Column(postgresql.UUID(as_uuid=True), primary_key=True, default=uuid4)
     created_at = sa.Column(sa.DateTime(), server_default=sa.func.now())
     updated_at = sa.Column(sa.DateTime(), onupdate=sa.func.now())
+    session_id = sa.Column(postgresql.UUID(as_uuid=True), sa.ForeignKey("sessions.id"), index=True)
     quiz_id = sa.Column(postgresql.UUID(as_uuid=True), sa.ForeignKey("quizes.id"), index=True)
     status = sa.Column(sa.String())
 

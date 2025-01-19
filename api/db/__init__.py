@@ -7,6 +7,7 @@ from .models import (
     GameAnswerOrm,
     GameResultOrm,
     InvitationOrm,
+    SessionOrm,
 )
 from .engine import Session
 from .repository_mixin import RepositoryMixin
@@ -23,4 +24,5 @@ __all__ = [
     "GameAnswerOrm",
     "GameResultOrm",
     "InvitationOrm",
+    "SessionOrm"
 ]
