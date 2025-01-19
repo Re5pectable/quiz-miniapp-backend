@@ -1,7 +1,7 @@
 import secrets
 from typing import Annotated
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
 from ..config import api_config
@@ -31,3 +31,6 @@ def __authorize(
     return True
 
 authorized = Annotated[str, Depends(__authorize)]
+
+def get_session(request: Request):
+    return request.headers.get("session-id")

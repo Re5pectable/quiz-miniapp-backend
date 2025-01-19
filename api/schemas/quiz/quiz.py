@@ -4,14 +4,15 @@ from uuid import UUID
 from pydantic import BaseModel
 
 from ... import db
+from . import repository
 
 
 class QuizCreate(BaseModel, db.RepositoryMixin):
     header: str
-    short_name: str
+    short_name: str | None
     text: str
-    config: dict
-    point_fields: list[str]
+    config: dict | None
+    point_keys: list[str] | None
 
     class Config:
         from_attributes = True
@@ -30,6 +31,9 @@ class QuizView(QuizEdit):
     updated_at: datetime | None
     logo_url: str | None
     
+    async def get_questions_amount(self) -> int:
+        return await repository.get_quiz_questions_amount(self.id)
+
 
 class QuizPreview(BaseModel, db.RepositoryMixin):
     id: UUID

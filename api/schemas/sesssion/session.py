@@ -13,4 +13,5 @@ class Session(BaseModel):
     
     @classmethod
     async def init(cls, id, user_data, request: Request) -> UUID:
-        return await repository.init_session(id, user_data, request.headers.get("user-agent"))
+        session_id = await repository.init_session(id, user_data, request.headers.get("user-agent"))
+        return {'session_id': session_id}

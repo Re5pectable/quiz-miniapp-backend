@@ -6,6 +6,7 @@ from .routers.quiz_question import router as quiz_questions_router
 from .routers.quiz_question_answer import router as quiz_question_answer_router
 from .routers.quiz_result import router as quiz_result_router
 from .routers.session import router as session_router
+from .routers.games import router as game_router
 
 app = FastAPI()
 app.include_router(quiz_router, prefix="/quiz", tags=['Quiz'])
@@ -13,6 +14,7 @@ app.include_router(quiz_questions_router, prefix="/quiz/questions", tags=['Quiz 
 app.include_router(quiz_question_answer_router, prefix="/quiz/questions/answers", tags=['Quiz Questions Answers'])
 app.include_router(quiz_result_router, prefix="/quiz/results", tags=['Quiz Results'])
 app.include_router(session_router, prefix="/session", tags=['Session'])
+app.include_router(game_router, prefix="/game", tags=['Game'])
 
 origins = [
     "http://localhost",

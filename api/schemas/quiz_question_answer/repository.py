@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from sqlalchemy import select, update
 
 from ... import db
@@ -6,19 +7,22 @@ from ... import db
 async def __verify_points(session, **data):
     quiz_question_id = data['quiz_question_id']
     stmt = (
-        select(db.QuizOrm.point_fields)
+        select(db.QuizOrm.id, db.QuizOrm.point_keys)
         .select_from(db.QuizOrm)
         .join(db.QuizQuestionOrm, db.QuizQuestionOrm.quiz_id == db.QuizOrm.id)
         .where(db.QuizQuestionOrm.id == quiz_question_id)
     )
     q = await session.execute(stmt)
-    point_fields = q.scalars().first()
+    quiz_id, point_keys = q.fetchone()
     
-    if point_fields is None:
-        raise ValueError("quiz not found.")
+    if not quiz_id:
+        raise HTTPException(404, "Quiz not found.")
     
-    if any([True for point_name in data['points'].keys() if point_name not in point_fields]):
-        raise ValueError("`points` keys should all be present in parent quiz `point_fields` field.")
+    if not point_keys and not isinstance(data['points'], (float, int)):
+        raise HTTPException(422, "If you don't use `point_keys`, `points` should be passed in numeric format.")
+    
+    if point_keys and any([True for point_name in data['points'].keys() if point_name not in point_keys]):
+        raise HTTPException(422, "`points` keys should all be present in parent quiz `point_keys` field.")
 
 async def get_many(**kwargs) -> list[db.QuizQuestionAnswerOrm]:
     async with db.Session() as session:

@@ -5,7 +5,6 @@ from .models import (
     QuizResultOrm,
     GameOrm,
     GameAnswerOrm,
-    GameResultOrm,
     InvitationOrm,
     SessionOrm,
 )
@@ -22,7 +21,6 @@ __all__ = [
     "QuizResultOrm",
     "GameOrm",
     "GameAnswerOrm",
-    "GameResultOrm",
     "InvitationOrm",
     "SessionOrm"
 ]
