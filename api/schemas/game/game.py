@@ -35,6 +35,7 @@ class Game(BaseModel, db.RepositoryMixin):
         questions_count = await quiz.get_questions_amount()
         return {
             "quiz": {
+                "id": quiz.id,
                 "header": quiz.header,
                 "logo_url": quiz.logo_url,
                 "n_questions": questions_count,

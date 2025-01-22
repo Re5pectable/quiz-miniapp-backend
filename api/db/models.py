@@ -13,6 +13,7 @@ class QuizOrm(Base):
     created_at = sa.Column(sa.DateTime(), server_default=sa.func.now())
     updated_at = sa.Column(sa.DateTime(), onupdate=sa.func.now())
     type = sa.Column(sa.String())
+    category = sa.Column(sa.String())
     header = sa.Column(sa.String())
     short_name = sa.Column(sa.String())
     text = sa.Column(sa.String())

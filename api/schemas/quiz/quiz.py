@@ -8,6 +8,8 @@ from . import repository
 
 
 class QuizCreate(BaseModel, db.RepositoryMixin):
+    category: str
+    type: str
     header: str
     short_name: str | None
     text: str
@@ -23,6 +25,8 @@ class QuizCreate(BaseModel, db.RepositoryMixin):
 
 class QuizEdit(QuizCreate):
     id: UUID
+    category: str
+    type: str
     is_active: bool
 
 
@@ -38,6 +42,8 @@ class QuizView(QuizEdit):
 class QuizPreview(BaseModel, db.RepositoryMixin):
     id: UUID
     header: str
+    category: str
+    type: str
     logo_url: str | None
     
     class Config:

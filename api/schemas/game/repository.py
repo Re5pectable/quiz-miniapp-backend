@@ -152,7 +152,7 @@ async def get_or_generate_result(game_id) -> tuple[db.QuizResultOrm, dict]:
         results: list[db.QuizResultOrm] = q.scalars().all()
         
         for result in results:
-            min_, max_ = result.points[0], result.points[0]
+            min_, max_ = result.points[0], result.points[1]
             if min_ <= total_points <= max_:
                 break
         else:
@@ -160,7 +160,7 @@ async def get_or_generate_result(game_id) -> tuple[db.QuizResultOrm, dict]:
         
         result_copy = {"points": total_points, "total_questions": total_questions}
         
-        stmt = update(db.GameOrm).where(db.GameOrm.id == game_id).values(quiz_result_id=result.id, quiz_result_copy=result_copy)
+        stmt = update(db.GameOrm).where(db.GameOrm.id == game_id).values(quiz_result_id=result.id, result=result_copy)
         q = await session.execute(stmt)
         
         await session.commit()
