@@ -1,0 +1,35 @@
+services:
+
+  quiz-api:
+    container_name: quiz-api
+    build: ./api
+    ports:
+      - 127.0.0.1:8000:8000
+    environment:
+      S3_KEY_ID: ${S3_KEY_ID}
+      S3_KEY_SECRET: ${S3_KEY_SECRET}
+      S3_BUCKET_NAME: ${S3_BUCKET_NAME}
+      S3_ENDPOINT: ${S3_ENDPOINT}
+
+      DB_HOST: ${DB_HOST}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+
+      API_LOGIN: ${API_LOGIN}
+      API_PASSWORD: ${API_PASSWORD}
+
+  quiz-db:
+    container_name: quiz-db
+    image: postgres:16
+    ports:
+      - 0.0.0.0:5432:5432
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - v_quiz_postgres:/var/lib/postgresql/data
+
+volumes:
+  v_quiz_postgres:
