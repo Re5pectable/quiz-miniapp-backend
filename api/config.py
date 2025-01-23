@@ -18,5 +18,5 @@ class S3Config(BaseModel):
 s3_config = S3Config()
 api_config = APIConfig()
 
-if not DEBUG:
+if DEBUG:
     print(api_config)
