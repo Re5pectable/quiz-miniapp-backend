@@ -6,6 +6,8 @@ services:
     ports:
       - 127.0.0.1:8000:8000
     environment:
+      DEBUG: ${DEBUG}
+
       S3_KEY_ID: ${S3_KEY_ID}
       S3_KEY_SECRET: ${S3_KEY_SECRET}
       S3_BUCKET_NAME: ${S3_BUCKET_NAME}
