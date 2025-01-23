@@ -22,6 +22,13 @@ class Game(BaseModel, db.RepositoryMixin):
 
     class Meta:
         orm_model = db.GameOrm
+        
+    @classmethod
+    async def __get(cls, game_id: UUID):
+        game = await cls.db_get_or_none(id=game_id)
+        if not game:
+            raise HTTPException(404, "Game not found.")
+        return game
 
     @classmethod
     async def start(cls, quiz_id: UUID, session_id: UUID):
@@ -30,7 +37,7 @@ class Game(BaseModel, db.RepositoryMixin):
 
     @classmethod
     async def get_info(cls, game_id: UUID):
-        game = await cls.db_get_or_none(id=game_id)
+        game = await cls.__get(game_id)
         quiz = await QuizView.db_get_or_none(id=game.quiz_id)
         questions_count = await quiz.get_questions_amount()
         return {
@@ -45,7 +52,7 @@ class Game(BaseModel, db.RepositoryMixin):
 
     @classmethod
     async def next(cls, game_id: UUID):
-        game = await cls.db_get_or_none(id=game_id)
+        game = await cls.__get(game_id)
         if game.is_finished:
             return {"is_finished": True}
 
@@ -57,7 +64,7 @@ class Game(BaseModel, db.RepositoryMixin):
     
     @classmethod
     async def get_result(cls, game_id: UUID):
-        game = await cls.db_get_or_none(id=game_id)
+        game = await cls.__get(game_id)
         if not game.is_finished:
             raise HTTPException(403, "This quiz has not been finished yet.")
         result, copy = await repository.get_or_generate_result(game.id)
@@ -72,7 +79,7 @@ class Game(BaseModel, db.RepositoryMixin):
 
     @classmethod
     async def make_answer(cls, game_id: UUID, answer_id: UUID):
-        game = await cls.db_get_or_none(id=game_id)
+        game = await cls.__get(game_id)
         chosen, correct = await repository.make_answer(
             game_id, game.current_quiz_question_id, answer_id
         )
