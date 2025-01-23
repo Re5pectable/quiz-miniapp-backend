@@ -12,4 +12,5 @@ async def init_session(
     user_data: dict | None = Body({}),
     session_id: UUID | None = Body(None),
 ):
+    print(dict(request.headers))
     return await Session.init(session_id, user_data, request)
