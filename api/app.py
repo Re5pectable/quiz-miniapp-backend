@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware
 
 from .routers.quiz import router as quiz_router
 from .routers.quiz_question import router as quiz_questions_router
