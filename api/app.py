@@ -7,6 +7,7 @@ from .routers.quiz_question_answer import router as quiz_question_answer_router
 from .routers.quiz_result import router as quiz_result_router
 from .routers.session import router as session_router
 from .routers.games import router as game_router
+from .config import DEBUG
 
 app = FastAPI()
 app.include_router(quiz_router, prefix="/quiz", tags=['Quiz'])
@@ -36,4 +37,4 @@ app.add_middleware(
 
 def main():
     import uvicorn
-    uvicorn.run("api.app:app", reload=True, host='0.0.0.0', port=8000)
+    uvicorn.run("api.app:app", reload=DEBUG, host='0.0.0.0', port=8000)

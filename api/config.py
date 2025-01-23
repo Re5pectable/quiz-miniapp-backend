@@ -1,6 +1,7 @@
 import os
 from pydantic import BaseModel
 
+DEBUG = bool(int(os.getenv("DEBUG")))
 
 class APIConfig(BaseModel):
     login: str = os.getenv("API_LOGIN")
@@ -17,4 +18,5 @@ class S3Config(BaseModel):
 s3_config = S3Config()
 api_config = APIConfig()
 
-print(api_config)
+if not DEBUG:
+    print(api_config)
