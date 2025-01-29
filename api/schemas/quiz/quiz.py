@@ -1,10 +1,14 @@
 from datetime import datetime
 from uuid import UUID
+from typing import Any
+import json
 
-from pydantic import BaseModel
+from pydantic import BaseModel, model_validator
+from fastapi import UploadFile
 
 from ... import db
 from . import repository
+from ...adapters import s3
 
 
 class QuizCreate(BaseModel, db.RepositoryMixin):
@@ -15,12 +19,20 @@ class QuizCreate(BaseModel, db.RepositoryMixin):
     text: str
     config: dict | None
     point_keys: list[str] | None
+    logo_url: str | None = None
 
     class Config:
         from_attributes = True
 
     class Meta:
         orm_model = db.QuizOrm
+        
+    @model_validator(mode='before')
+    @classmethod
+    def validate_to_json(cls, value: Any) -> Any:
+        if isinstance(value, str):
+            return cls(**json.loads(value))
+        return value
 
 
 class QuizEdit(QuizCreate):
@@ -28,6 +40,14 @@ class QuizEdit(QuizCreate):
     category: str
     type: str
     is_active: bool
+    
+    async def update(self, logo_pic: UploadFile | None = None):
+        if logo_pic:
+            extention = logo_pic.filename.split(".")[-1]
+            file_path = f"question_pics/{self.id}.{extention}"
+            url = s3.upload_file(logo_pic.file, file_path)
+            self.logo_url = url
+        await self.db_update()
 
 
 class QuizView(QuizEdit):
@@ -41,10 +61,12 @@ class QuizView(QuizEdit):
 
 class QuizPreview(BaseModel, db.RepositoryMixin):
     id: UUID
+    created_at: datetime | None
     header: str
     category: str
     type: str
     logo_url: str | None
+    is_active: bool
     
     class Config:
         from_attributes = True
