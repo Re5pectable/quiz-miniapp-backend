@@ -7,7 +7,9 @@ from .routers.quiz_question_answer import router as quiz_question_answer_router
 from .routers.quiz_result import router as quiz_result_router
 from .routers.session import router as session_router
 from .routers.games import router as game_router
+from .routers.auth import router as auth_router
 from .config import DEBUG
+from .routers.utils.middleware import TryExceptMiddleware
 
 app = FastAPI()
 app.include_router(quiz_router, prefix="/quiz", tags=['Quiz'])
@@ -16,6 +18,7 @@ app.include_router(quiz_question_answer_router, prefix="/quiz/questions/answers"
 app.include_router(quiz_result_router, prefix="/quiz/results", tags=['Quiz Results'])
 app.include_router(session_router, prefix="/session", tags=['Session'])
 app.include_router(game_router, prefix="/game", tags=['Game'])
+app.include_router(auth_router, prefix="/auth", tags=['Auth'])
 
 origins = [
     "http://localhost",
@@ -34,6 +37,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.add_middleware(TryExceptMiddleware)
 
 def main():
     import uvicorn

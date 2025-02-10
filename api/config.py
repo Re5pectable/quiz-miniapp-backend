@@ -6,6 +6,10 @@ DEBUG = bool(int(os.getenv("DEBUG")))
 class APIConfig(BaseModel):
     login: str = os.getenv("API_LOGIN")
     password: str = os.getenv("API_PASSWORD")
+    JWT_SECRET: str = os.getenv("JWT_SECRET")
+    JWT_ALGO: str = "HS256"
+    JWT_ACCESS_EXP_SEC: int = 60 * 15
+    JWT_REFRESH_EXP_SEC: int = 60 * 60 * 24 * 3
 
 
 class S3Config(BaseModel):

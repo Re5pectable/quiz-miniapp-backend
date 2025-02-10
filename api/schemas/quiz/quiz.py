@@ -17,7 +17,7 @@ class QuizCreate(BaseModel, db.RepositoryMixin):
     header: str
     short_name: str | None
     text: str
-    config: dict | None
+    config: dict | None = None
     point_keys: list[str] | None
     logo_url: str | None = None
 
@@ -33,6 +33,14 @@ class QuizCreate(BaseModel, db.RepositoryMixin):
         if isinstance(value, str):
             return cls(**json.loads(value))
         return value
+    
+    async def create(self, logo_pic: UploadFile):
+        orm = await self.db_create()
+        if logo_pic:
+            extention = logo_pic.filename.split(".")[-1]
+            file_path = f"question_pics/{orm.id}.{extention}"
+            url = s3.upload_file(logo_pic.file, file_path)
+            await self.db_update_fields_by_id(orm.id, logo_url = url)
 
 
 class QuizEdit(QuizCreate):

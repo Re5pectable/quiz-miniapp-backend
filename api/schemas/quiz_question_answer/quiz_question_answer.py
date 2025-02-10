@@ -11,7 +11,7 @@ class QuizQuestionAnswerCreate(BaseModel, db.RepositoryMixin):
     quiz_question_id: UUID
     text: str
     note: str | None
-    points: dict
+    points: dict | int
     order: int
 
     class Config:

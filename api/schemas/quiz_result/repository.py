@@ -13,7 +13,7 @@ async def __verify_points(session, **data):
     if not quiz_id:
         raise HTTPException(404, "Quiz not found.")
     
-    if not point_keys and not isinstance(data['points'], (float, int)):
+    if not point_keys and not isinstance(data['points'], list):
         raise HTTPException(422, "If you don't use `point_keys`, `points` should be passed in numeric format.")
     
     if point_keys and any([True for point_name in data['points'].keys() if point_name not in point_keys]):
@@ -25,6 +25,7 @@ async def create(**data):
         obj = db.QuizResultOrm(**data)
         session.add(obj)
         await session.commit()
+        return obj
         
 async def update_(**data):
     async with db.Session() as session:

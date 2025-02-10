@@ -3,7 +3,7 @@ from uuid import UUID
 from fastapi import APIRouter, Body, Depends, Query
 
 from ..schemas.game import Game
-from ._auth import get_session
+from .auth import get_session
 
 router = APIRouter()
 

@@ -5,6 +5,9 @@ from ... import db
 
 
 async def __verify_points(session, **data):
+    if isinstance(data['points'], (float, int)):
+        return
+    
     quiz_question_id = data['quiz_question_id']
     stmt = (
         select(db.QuizOrm.id, db.QuizOrm.point_keys)
@@ -17,9 +20,6 @@ async def __verify_points(session, **data):
     
     if not quiz_id:
         raise HTTPException(404, "Quiz not found.")
-    
-    if not point_keys and not isinstance(data['points'], (float, int)):
-        raise HTTPException(422, "If you don't use `point_keys`, `points` should be passed in numeric format.")
     
     if point_keys and any([True for point_name in data['points'].keys() if point_name not in point_keys]):
         raise HTTPException(422, "`points` keys should all be present in parent quiz `point_keys` field.")

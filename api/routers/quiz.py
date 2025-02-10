@@ -1,7 +1,9 @@
 from uuid import UUID
-from fastapi import APIRouter, Body, Query, File, UploadFile, Form
-from ..schemas.quiz import QuizCreate, QuizEdit, QuizView, QuizPreview
-from ._auth import authorized
+
+from fastapi import APIRouter, Body, Depends, File, Form, Query, UploadFile
+
+from ..schemas.quiz import QuizCreate, QuizEdit, QuizPreview, QuizView
+from .auth import authorized
 
 router = APIRouter()
 
@@ -15,28 +17,34 @@ async def get_quiz(id: UUID = Query()):
 async def get_quize_previews():
     return await QuizPreview.db_get_many(is_deleted=False, is_active=True)
 
+@router.get("/all/admin")
+async def get_quize_previews_all(
+    _: bool = Depends(authorized),
+):
+    return await QuizPreview.db_get_many(is_deleted=False)
+
 
 @router.post("")
 async def create_quiz(
-    _: authorized,
     quiz: QuizCreate = Form(),
     logo_pic: UploadFile = File(...),
+    _: bool = Depends(authorized),
 ):
-    await quiz.db_create()
+    await quiz.create(logo_pic)
 
 
 @router.put("")
 async def update_quiz(
-    _: authorized,
     data: QuizEdit = Body(...),
     logo_pic: UploadFile | None = File(None),
+    _: bool = Depends(authorized),
 ):
     await data.update(logo_pic=logo_pic)
 
 
 @router.delete("")
 async def delete_quiz(
-    _: authorized,
     id: UUID = Body(embed=True),
+    _: bool = Depends(authorized),
 ):
     await QuizView.db_update_fields_by_id(id, is_deleted=True)

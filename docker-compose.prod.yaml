@@ -20,6 +20,7 @@ services:
 
       API_LOGIN: ${API_LOGIN}
       API_PASSWORD: ${API_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
 
   quiz-db:
     container_name: quiz-db
