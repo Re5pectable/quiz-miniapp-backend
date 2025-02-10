@@ -33,7 +33,7 @@ class QuizResultCreate(BaseModel, db.RepositoryMixin):
         return value
     
     async def create(self, picture: UploadFile):
-        orm = await repository.create(self.model_dump())
+        orm = await repository.create(**self.model_dump())
         if picture:
             extention = picture.filename.split(".")[-1]
             file_path = f"question_answers_pics/{orm.id}.{extention}"
