@@ -2,6 +2,7 @@ from uuid import UUID
 
 from pydantic import BaseModel
 from fastapi import HTTPException
+from fastapi.responses import HTMLResponse
 
 from ... import db
 from . import repository
@@ -89,3 +90,28 @@ class Game(BaseModel, db.RepositoryMixin):
             "chosen_note": chosen.note,
             "correct_id": correct.id,
         }
+
+    @classmethod
+    async def get_share(cls, game_id):
+        quiz = await repository.get_share(game_id)
+        html_content = f"""
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta property="og:title" content="{quiz.header}" />
+                <meta property="og:description" content="{quiz.text}" />
+                <meta property="og:image" content="{quiz.logo_url}" />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://t.me/KleyMediaBot/Quiz?startapp={quiz.id}"/>
+                <title>{quiz.header}</title>
+            </head>
+            <body>
+                <script>
+                    window.location.href = "https://t.me/KleyMediaBot/Quiz?startapp={quiz.id}"
+                </script>
+            </body>
+            </html>
+        """
+        return HTMLResponse(html_content)
+        

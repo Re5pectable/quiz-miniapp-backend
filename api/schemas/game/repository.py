@@ -172,5 +172,13 @@ async def get_or_generate_result(game_id) -> tuple[db.QuizResultOrm, dict]:
         await session.commit()
         
         return result, result_copy
-                
-        
+
+async def get_share(game_id) -> db.QuizOrm | None:
+    async with db.Session() as session:
+        stmt = (
+            select(db.QuizOrm)
+            .join(db.GameOrm, db.GameOrm.quiz_id == db.QuizOrm.id)
+            .where(db.GameOrm.id == game_id)
+        )
+        q = await session.execute(stmt)
+        return q.scalars().first()

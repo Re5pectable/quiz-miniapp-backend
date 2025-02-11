@@ -8,6 +8,7 @@ from .routers.quiz_result import router as quiz_result_router
 from .routers.session import router as session_router
 from .routers.games import router as game_router
 from .routers.auth import router as auth_router
+from .routers.share import router as share_router
 from .config import DEBUG
 from .routers.utils.middleware import TryExceptMiddleware
 
@@ -19,6 +20,7 @@ app.include_router(quiz_result_router, prefix="/quiz/results", tags=['Quiz Resul
 app.include_router(session_router, prefix="/session", tags=['Session'])
 app.include_router(game_router, prefix="/game", tags=['Game'])
 app.include_router(auth_router, prefix="/auth", tags=['Auth'])
+app.include_router(share_router, prefix="/share", tags=['Auth'])
 
 origins = [
     "http://localhost",
