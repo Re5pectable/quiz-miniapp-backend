@@ -22,9 +22,9 @@ COPY . .
 WORKDIR /usr/app
 
 # creating a non-root user
-RUN groupadd -r apiuser && useradd -r -g apiuser apiuser
+# RUN groupadd -r apiuser && useradd -r -g apiuser apiuser
 
-RUN chown -R apiuser:apiuser /usr/app
+# RUN chown -R apiuser:apiuser /usr/app
 
 # switch to non-root user
 # USER apiuser
