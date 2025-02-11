@@ -10,6 +10,10 @@ HTML_TEMPLATE = """
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Динамическое изображение</title>
     <style>
+        @font-face {
+            font-family: "StratosWeb";
+            src: URL("api/utils/static/Stratos-Semibold.ttf") format("truetype");
+        }
         body {
             width: 600px;
             height: 400px;
