@@ -1,9 +1,14 @@
 from uuid import UUID
+import string
+import random
 
 from sqlalchemy import Integer, func, select, update
 from fastapi import HTTPException
 
 from ... import db
+
+def random_string(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
 
 
 async def create(quiz_id, session_id) -> UUID:
@@ -114,6 +119,7 @@ async def make_answer(game_id, question_id, answer_id) -> tuple[db.QuizQuestionA
         if not next_question_id:
             stmt = update(db.GameOrm).where(db.GameOrm.id == game_id).values(is_finished=True, current_quiz_question_id=None)
             await session.execute(stmt)
+            
         else:
             stmt = update(db.GameOrm).where(db.GameOrm.id == game_id).values(current_quiz_question_id=next_question_id)
             await session.execute(stmt)

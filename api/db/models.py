@@ -100,6 +100,6 @@ class InvitationOrm(Base):
     id = sa.Column(postgresql.UUID(as_uuid=True), primary_key=True, default=uuid4)
     created_at = sa.Column(sa.DateTime(), server_default=sa.func.now())
     updated_at = sa.Column(sa.DateTime(), onupdate=sa.func.now())
-    short_name = sa.Column(sa.String(), index=True)
+    short_name = sa.Column(sa.String(), index=True, unique=True)
     game_id = sa.Column(postgresql.UUID(as_uuid=True), sa.ForeignKey("games.id"), index=True)
     click_counter = sa.Column(sa.Integer())
