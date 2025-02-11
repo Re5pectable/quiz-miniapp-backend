@@ -93,11 +93,11 @@ async def make(
         extention = background_url.split("/")[-1].split(".")[-1]
         temp_path = f"{uuid4()}.{extention}"
         output_path = "output_" + temp_path
-        print('Trying to download', background_url)
-        local_filepath = await download_image(background_url, save_path=temp_path)
-        print("downloaded", local_filepath)
+        # print('Trying to download', background_url)
+        # local_filepath = await download_image(background_url, save_path=temp_path)
+        # print("downloaded", local_filepath)
         template = Template(_template).render(
-            background_url=local_filepath,
+            background_url=background_url,
             score=score,
             total_questions=total_questions,
             background_color=color,
