@@ -27,7 +27,7 @@ RUN groupadd -r apiuser && useradd -r -g apiuser apiuser
 RUN chown -R apiuser:apiuser /usr/app
 
 # switch to non-root user
-USER apiuser
+# USER apiuser
 
 EXPOSE 8000
 
