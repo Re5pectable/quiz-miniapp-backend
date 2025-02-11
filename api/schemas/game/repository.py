@@ -196,4 +196,5 @@ async def get_share(invitation_id) -> db.QuizOrm | None:
             .where(db.GameOrm.id == game_id)
         )
         q = await session.execute(stmt)
+        await session.commit()
         return q.scalars().first()
