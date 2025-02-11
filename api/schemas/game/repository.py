@@ -119,7 +119,6 @@ async def make_answer(game_id, question_id, answer_id) -> tuple[db.QuizQuestionA
         if not next_question_id:
             stmt = update(db.GameOrm).where(db.GameOrm.id == game_id).values(is_finished=True, current_quiz_question_id=None)
             await session.execute(stmt)
-            
         else:
             stmt = update(db.GameOrm).where(db.GameOrm.id == game_id).values(current_quiz_question_id=next_question_id)
             await session.execute(stmt)
@@ -169,16 +168,23 @@ async def get_or_generate_result(game_id) -> tuple[db.QuizResultOrm, dict]:
         stmt = update(db.GameOrm).where(db.GameOrm.id == game_id).values(quiz_result_id=result.id, result=result_copy)
         q = await session.execute(stmt)
         
+        invitation = db.InvitationOrm(
+            id=random_string(12),
+            game_id=game_id,
+        )
+        session.add(invitation)
+        
         await session.commit()
         
-        return result, result_copy
+        return result, result_copy, invitation.id
 
-async def get_share(game_id) -> db.QuizOrm | None:
+async def get_share(invitation_id) -> db.QuizOrm | None:
     async with db.Session() as session:
         stmt = (
             select(db.QuizOrm)
+            .join(db.InvitationOrm, db.InvitationOrm.game_id == db.GameOrm.id)
             .join(db.GameOrm, db.GameOrm.quiz_id == db.QuizOrm.id)
-            .where(db.GameOrm.id == game_id)
+            .where(db.InvitationOrm.id == invitation_id)
         )
         q = await session.execute(stmt)
         return q.scalars().first()

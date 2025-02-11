@@ -4,8 +4,8 @@ from ..schemas.game import Game
 
 router = APIRouter()
 
-@router.get("/{game_id}")
+@router.get("/{invitation_id}")
 async def get_share_page(
-    game_id: UUID
+    invitation_id: UUID
 ):
-    return await Game.get_share(game_id)
+    return await Game.get_share(invitation_id)

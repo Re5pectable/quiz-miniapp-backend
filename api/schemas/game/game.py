@@ -68,19 +68,22 @@ class Game(BaseModel, db.RepositoryMixin):
         game = await cls.__get(game_id)
         if not game.is_finished:
             raise HTTPException(403, "This quiz has not been finished yet.")
-        result, copy = await repository.get_or_generate_result(game.id)
+        result, copy, invitation_id = await repository.get_or_generate_result(game.id)
         return {
             "copy": copy,
             "header": result.header,
             "text": result.text,
             "pic_url": result.pic_url,
-            "points": result.points
+            "points": result.points,
+            "invitation_id": invitation_id,
         }
         
 
     @classmethod
     async def make_answer(cls, game_id: UUID, answer_id: UUID):
         game = await cls.__get(game_id)
+        if game.is_finished:
+            raise HTTPException(400, "Game is finished.")
         chosen, correct = await repository.make_answer(
             game_id, game.current_quiz_question_id, answer_id
         )
@@ -92,8 +95,8 @@ class Game(BaseModel, db.RepositoryMixin):
         }
 
     @classmethod
-    async def get_share(cls, game_id):
-        quiz = await repository.get_share(game_id)
+    async def get_share(cls, invitation_id):
+        quiz = await repository.get_share(invitation_id)
         html_content = f"""
             <!DOCTYPE html>
             <html lang="en">

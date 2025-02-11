@@ -93,13 +93,16 @@ class GameAnswerOrm(Base):
     game_id = sa.Column(postgresql.UUID(as_uuid=True), sa.ForeignKey("games.id"), index=True)
     quiz_question_id = sa.Column(postgresql.UUID(as_uuid=True), sa.ForeignKey("quiz_questions.id"))
     quiz_question_answer_id = sa.Column(postgresql.UUID(as_uuid=True), sa.ForeignKey("quiz_question_answers.id"))
+    
+    __table_args__ = (
+        sa.UniqueConstraint("game_id", "quiz_question_id", name="game_game_questions_uq"),
+    )
 
 
 class InvitationOrm(Base):
     __tablename__ = "invitations"
-    id = sa.Column(postgresql.UUID(as_uuid=True), primary_key=True, default=uuid4)
+    id = sa.Column(sa.String(), primary_key=True)
     created_at = sa.Column(sa.DateTime(), server_default=sa.func.now())
     updated_at = sa.Column(sa.DateTime(), onupdate=sa.func.now())
-    short_name = sa.Column(sa.String(), index=True, unique=True)
     game_id = sa.Column(postgresql.UUID(as_uuid=True), sa.ForeignKey("games.id"), index=True)
-    click_counter = sa.Column(sa.Integer())
+    click_counter = sa.Column(sa.Integer(), default=0)
