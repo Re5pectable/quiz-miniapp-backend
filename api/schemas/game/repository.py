@@ -169,7 +169,7 @@ async def get_or_generate_result(game_id) -> tuple[db.QuizResultOrm, dict]:
         q = await session.execute(stmt)
         
         invitation = db.InvitationOrm(
-            id=random_string(12),
+            id=random_string(8),
             game_id=game_id,
         )
         session.add(invitation)
