@@ -7,7 +7,7 @@ from fastapi import HTTPException
 
 from ... import db
 
-def random_string(size=6, chars=string.ascii_uppercase + string.digits):
+def random_string(size=6, chars=string.ascii_uppercase + string.digits + string.ascii_lowercase):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
