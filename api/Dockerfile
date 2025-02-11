@@ -29,6 +29,10 @@ WORKDIR /usr/app
 # switch to non-root user
 # USER apiuser
 
+RUN export XDG_RUNTIME_DIR=/tmp/runtime-root
+RUN chmod +x /usr/bin/wkhtmltoimage
+
+
 EXPOSE 8000
 
 CMD ["python", "-m", "api"]
