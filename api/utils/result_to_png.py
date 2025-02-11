@@ -95,13 +95,14 @@ async def make(
         output_path = "output_" + temp_path
         print('Trying to download', background_url)
         local_filepath = await download_image(background_url, save_path=temp_path)
-        print("downloaded")
+        print("downloaded", local_filepath)
         template = Template(_template).render(
             background_url=local_filepath,
             score=score,
             total_questions=total_questions,
             background_color=color,
         )
+        print(template)
         print("rendered")
         options = {"format": "png", "quality": 100}
         imgkit.from_string(template, output_path, options=options)
