@@ -180,11 +180,20 @@ async def get_or_generate_result(game_id) -> tuple[db.QuizResultOrm, dict]:
 
 async def get_share(invitation_id) -> db.QuizOrm | None:
     async with db.Session() as session:
+        stmt  = (
+            update(db.InvitationOrm)
+            .values(click_counter=db.InvitationOrm.click_counter + 1)
+            .where(db.InvitationOrm.id == invitation_id)
+            .returning(db.InvitationOrm.game_id)
+        )
+        q = await session.execute(stmt)
+        game_id = q.scalars().first()
+        if not game_id:
+            raise HTTPException(404, "Game not found.")
         stmt = (
             select(db.QuizOrm)
-            .join(db.InvitationOrm, db.InvitationOrm.game_id == db.GameOrm.id)
             .join(db.GameOrm, db.GameOrm.quiz_id == db.QuizOrm.id)
-            .where(db.InvitationOrm.id == invitation_id)
+            .where(db.GameOrm.id == game_id)
         )
         q = await session.execute(stmt)
         return q.scalars().first()
