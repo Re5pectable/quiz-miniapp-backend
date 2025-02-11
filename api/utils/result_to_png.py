@@ -93,20 +93,23 @@ async def make(
         extention = background_url.split("/")[-1].split(".")[-1]
         temp_path = f"{uuid4()}.{extention}"
         output_path = "output_" + temp_path
+        print('Trying to download', background_url)
         local_filepath = await download_image(background_url, save_path=temp_path)
-
+        print("downloaded")
         template = Template(_template).render(
             background_url=local_filepath,
             score=score,
             total_questions=total_questions,
             background_color=color,
         )
-
+        print("rendered")
         options = {"format": "png", "quality": 100}
         imgkit.from_string(template, output_path, options=options)
+        print("made")
         with open(output_path, "rb") as file:
             file_path = f"invitations/{invitation_id}.png"
             s3.upload_file(file.read(), file_path)
+            print("uploaded")
             return file_path
 
     except Exception as e:
