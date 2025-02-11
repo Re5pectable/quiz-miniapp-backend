@@ -44,17 +44,17 @@ _template = """
         letter-spacing: -0.07em;
         color: white;
         padding: 23px 69px;
-        background-color: {background_color};
+        background-color: {{background_color}};
         border-radius: 230px;
         }
     </style>
     </head>
     <body>
     <img
-        src="{background_url}"
+        src="{{background_url}}"
     />
     <div>
-        <span>{score}/{total_questions}</span>
+        <span>{{score}}/{{total_questions}}</span>
     </div>
     </body>
 </html>
