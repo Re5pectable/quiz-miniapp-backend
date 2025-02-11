@@ -72,12 +72,6 @@ async def download_image(image_url, save_path="image.jpg"):
     raise ValueError(f"Cannot download {image_url}")
 
 
-def html_to_png(html_content, output_path="output.png"):
-    """Конвертирует HTML в PNG"""
-
-    print(f"PNG сохранен: {output_path}")
-
-
 async def make(
     invitation_id, background_url: str, score, total_questions
 ):
@@ -102,9 +96,8 @@ async def make(
             total_questions=total_questions,
             background_color=color,
         )
-        print(template)
-        print("rendered")
         options = {"format": "png", "quality": 100}
+        print(template, output_path)
         imgkit.from_string(template, output_path, options=options)
         print("made")
         with open(output_path, "rb") as file:
