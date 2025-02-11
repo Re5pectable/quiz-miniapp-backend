@@ -106,3 +106,4 @@ class InvitationOrm(Base):
     updated_at = sa.Column(sa.DateTime(), onupdate=sa.func.now())
     game_id = sa.Column(postgresql.UUID(as_uuid=True), sa.ForeignKey("games.id"), index=True)
     click_counter = sa.Column(sa.Integer(), default=0)
+    image_url = sa.Column(sa.String())

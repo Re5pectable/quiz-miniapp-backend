@@ -178,23 +178,34 @@ async def get_or_generate_result(game_id) -> tuple[db.QuizResultOrm, dict]:
         
         return result, result_copy, invitation.id
 
-async def get_share(invitation_id) -> db.QuizOrm | None:
+async def get_share(invitation_id) -> tuple[db.QuizOrm, db.GameOrm, db.QuizResultOrm, db.InvitationOrm]:
     async with db.Session() as session:
         stmt  = (
             update(db.InvitationOrm)
             .values(click_counter=db.InvitationOrm.click_counter + 1)
             .where(db.InvitationOrm.id == invitation_id)
-            .returning(db.InvitationOrm.game_id)
+            .returning(db.InvitationOrm)
         )
         q = await session.execute(stmt)
-        game_id = q.scalars().first()
-        if not game_id:
+        invitation: db.InvitationOrm = q.scalars().first()
+        if not invitation:
             raise HTTPException(404, "Game not found.")
+        
         stmt = (
-            select(db.QuizOrm)
+            select(db.QuizOrm, db.GameOrm, db.QuizResultOrm)
             .join(db.GameOrm, db.GameOrm.quiz_id == db.QuizOrm.id)
-            .where(db.GameOrm.id == game_id)
+            .join(db.QuizResultOrm, db.GameOrm.quiz_result_id == db.QuizResultOrm.id)
+            .where(db.GameOrm.id == invitation.game_id)
         )
         q = await session.execute(stmt)
         await session.commit()
-        return q.scalars().first()
+        
+        quiz, game, result = q.fetchone()
+        
+        return quiz, game, result, invitation
+
+async def update_invitation(id, **kwargs):
+    async with db.Session() as session:
+        stmt = update(db.InvitationOrm).where(db.InvitationOrm.id == id).values(**kwargs)
+        await session.execute(stmt)
+        await session.commit()
