@@ -20,8 +20,8 @@ _template = """
       }
 
       body {
-        width: 1200px;
-        height: 630px;
+        width: 1300px;
+        height: 830px;
         display: flex;
         position: relative;
         margin: 0;
