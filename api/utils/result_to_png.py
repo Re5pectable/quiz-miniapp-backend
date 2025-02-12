@@ -102,14 +102,12 @@ async def make(background_url: str, score, total_questions):
         output = f"{uuid4()}.{extention}"
         
         print(f">>> {output}: Start rendering")
-        imgkit.from_string(template, output, options=options)
+        result = imgkit.from_string(template, False, options=options)
         print(f">>> {output}: End rendering")
-        
-        with open(output, "rb") as file:
-            file_path = f"invitation_img/{uuid4()}.png"
-            url = await s3.upload_file(file.read(), file_path)
-            print(f">>> {output}: Uploaded")
-            return url
+        file_path = f"invitation_img/{uuid4()}.png"
+        url = await s3.upload_file(result, file_path)
+        print(f">>> {output}: Uploaded")
+        return url
         
     except Exception as e:
         print(f">>> {output}: Error", str(e))

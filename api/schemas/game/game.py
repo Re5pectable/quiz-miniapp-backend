@@ -117,6 +117,8 @@ class Game(BaseModel, db.RepositoryMixin):
                 <meta property="og:description" content="{quiz.text}" />
                 <meta property="og:image" content="{image_url}" />
                 <meta property="og:type" content="website" />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
                 <meta property="og:url" content="https://t.me/KleyMediaBot/Quiz?startapp={quiz.id}"/>
                 <title>{quiz.header}</title>
             </head>
