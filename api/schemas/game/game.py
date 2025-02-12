@@ -117,8 +117,14 @@ class Game(BaseModel, db.RepositoryMixin):
                 <meta property="og:site_name" content="Клей Медиа">
                 <meta property="og:description" content="{quiz.text}" />
                 <meta property="og:image" content="{image_url}" />
-                <meta property="og:type" content="article" />
+                <meta property="og:type" content="website" />
                 <meta property="og:url" content="https://t.me/KleyMediaBot/Quiz?startapp={quiz.id}"/>
+                
+                <meta name="twitter:card" content="summary_large_image">
+                <meta name="twitter:title" content="{quiz.header}">
+                <meta name="twitter:description" content="{quiz.text}">
+                <meta name="twitter:image" content="{image_url}">
+                
                 <title>{quiz.header}</title>
             </head>
             <body>
