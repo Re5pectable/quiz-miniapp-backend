@@ -114,6 +114,7 @@ class Game(BaseModel, db.RepositoryMixin):
             <head>
                 <meta charset="UTF-8">
                 <meta property="og:title" content="{quiz.header}" />
+                <meta property="og:site_name" content="Квизы1">
                 <meta property="og:description" content="{quiz.text}" />
                 <meta property="og:image" content="{image_url}" />
                 <meta property="og:type" content="website" />
