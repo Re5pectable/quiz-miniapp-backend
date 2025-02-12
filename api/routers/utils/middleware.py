@@ -13,7 +13,7 @@ class TryExceptMiddleware(BaseHTTPMiddleware):
         try:
             return await call_next(request)
         except Exception as e:
-            print(str(e))
+            print("API error:", str(e))
             if DEBUG:
                 format_exc()
             return JSONResponse(status_code=409, content={"detail": "Sorry, something went wrong."})

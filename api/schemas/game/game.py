@@ -97,17 +97,16 @@ class Game(BaseModel, db.RepositoryMixin):
 
     @classmethod
     async def get_share(cls, invitation_id):
-        quiz, game, result, invitation = await repository.get_share(invitation_id)
+        quiz, game, invitation = await repository.get_share(invitation_id)
         
-        # image_url = invitation.image_url
-        # if not image_url:
-        #     image_url = await result_to_png.make(
-        #         invitation.id,
-        #         result.pic_url,
-        #         game.result['points'],
-        #         game.result['total_questions']
-        #     )
-        #     await repository.update_invitation(invitation.id, image_url=image_url)
+        image_url = invitation.image_url
+        if not image_url:
+            image_url = await result_to_png.make(
+                quiz.logo_url,
+                game.result['points'],
+                game.result['total_questions']
+            )
+            await repository.update_invitation(invitation_id, image_url=image_url)
         
         html_content = f"""
             <!DOCTYPE html>
@@ -116,7 +115,7 @@ class Game(BaseModel, db.RepositoryMixin):
                 <meta charset="UTF-8">
                 <meta property="og:title" content="{quiz.header}" />
                 <meta property="og:description" content="{quiz.text}" />
-                <meta property="og:image" content="{result.pic_url}" />
+                <meta property="og:image" content="{image_url}" />
                 <meta property="og:type" content="website" />
                 <meta property="og:url" content="https://t.me/KleyMediaBot/Quiz?startapp={quiz.id}"/>
                 <title>{quiz.header}</title>
