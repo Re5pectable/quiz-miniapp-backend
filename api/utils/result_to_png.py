@@ -55,6 +55,7 @@ _template = """
         color: white;
         font-weight: 600;
         letter-spacing: -0.07em;
+        margin-left: -0.07em;
       }
     </style>
   </head>
