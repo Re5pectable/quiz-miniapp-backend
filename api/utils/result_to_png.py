@@ -54,12 +54,8 @@ _template = """
         font-size: 134px;
         color: white;
         font-weight: 600;
-      }
-      .score,
-      .max-score {
         letter-spacing: -0.07em;
       }
-
     </style>
   </head>
   <body>
