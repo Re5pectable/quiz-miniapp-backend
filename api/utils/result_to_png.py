@@ -44,6 +44,7 @@ _template = """
       .rating {
         display: flex;
         align-items: center;
+        text-align: center;
         justify-content: center;
         background-color: {{background_color}};
         border-radius: 230px;
