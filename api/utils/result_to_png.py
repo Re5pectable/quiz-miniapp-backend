@@ -48,7 +48,7 @@ _template = """
         background-color: {{background_color}};
         border-radius: 230px;
         padding: 23px 69px;
-        font-family: Arial, sans-serif;
+        font-family: "StratosWeb", sans-serif;
         font-weight: bold;
         font-size: 134px;
         color: white;
