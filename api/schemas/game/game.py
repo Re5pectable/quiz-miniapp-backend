@@ -99,7 +99,7 @@ class Game(BaseModel, db.RepositoryMixin):
     async def get_share(cls, invitation_id):
         quiz, game, invitation = await repository.get_share(invitation_id)
         
-        image_url = invitation.image_url or quiz.logo_url
+        image_url = invitation.image_url
         if not image_url:
             image_url = await result_to_png.make(
                 quiz.logo_url,
