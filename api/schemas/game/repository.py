@@ -127,7 +127,7 @@ async def make_answer(game_id, question_id, answer_id) -> tuple[db.QuizQuestionA
         return chosen_answer, correct_answer
 
 
-async def get_or_generate_result(game_id) -> tuple[db.QuizResultOrm, dict]:
+async def get_or_generate_result(game_id):
     async with db.Session() as session:
         stmt = select(db.GameOrm.quiz_id, db.GameOrm.quiz_result_id, db.GameOrm.result).where(db.GameOrm.id == game_id)
         q = await session.execute(stmt)
@@ -137,7 +137,11 @@ async def get_or_generate_result(game_id) -> tuple[db.QuizResultOrm, dict]:
             stmt = select(db.QuizResultOrm).where(db.QuizResultOrm.id == quiz_result_id)
             q = await session.execute(stmt)
             result = q.scalars().first()
-            return result, quiz_result_copy
+            
+            stmt = select(db.InvitationOrm.id).where(db.InvitationOrm.game_id == game_id)
+            q = await session.execute(stmt)
+            invitation_id = q.scalars().first()
+            return result, quiz_result_copy, invitation_id
         
         stmt = (
             select(func.sum(db.QuizQuestionAnswerOrm.points.cast(Integer)))
