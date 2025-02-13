@@ -55,6 +55,8 @@ _template = """
         color: white;
         font-weight: 600;
         letter-spacing: -0.07em;
+      }
+      .score{
         margin-left: -0.07em;
       }
     </style>
