@@ -102,7 +102,7 @@ class Game(BaseModel, db.RepositoryMixin):
         image_url = invitation.image_url
         if not image_url:
             image_url = await result_to_png.make(
-                quiz.logo_url,
+                (result.pic_url or quiz.logo_url),
                 game.result['points'],
                 game.result['total_questions']
             )
