@@ -57,7 +57,6 @@ _template = """
       .score,
       .max-score {
         letter-spacing: -0.07em;
-        font-feature-settings: 'tnum' on, 'lnum' on;
       }
 
     </style>

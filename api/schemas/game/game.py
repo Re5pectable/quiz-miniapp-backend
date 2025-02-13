@@ -97,7 +97,7 @@ class Game(BaseModel, db.RepositoryMixin):
 
     @classmethod
     async def get_share(cls, invitation_id):
-        quiz, game, invitation = await repository.get_share(invitation_id)
+        quiz, game, result, invitation = await repository.get_share(invitation_id)
         
         image_url = invitation.image_url
         if not image_url:
@@ -114,8 +114,8 @@ class Game(BaseModel, db.RepositoryMixin):
             <head>
                 <meta charset="UTF-8">
                 <meta property="og:title" content="{quiz.header}" />
-                <meta property="og:site_name" content="Клей Медиа">
-                <meta property="og:description" content="{quiz.text}" />
+                <meta property="og:site_name" content="Клей Тесты">
+                <meta property="og:description" content="{result.text}" />
                 <meta property="og:image" content="{image_url}" />
                 <meta property="og:type" content="website" />
                 <meta property="og:url" content="https://t.me/KleyMediaBot/Quiz?startapp={quiz.id}"/>

@@ -178,7 +178,7 @@ async def get_or_generate_result(game_id) -> tuple[db.QuizResultOrm, dict]:
         
         return result, result_copy, invitation.id
 
-async def get_share(invitation_id) -> tuple[db.QuizOrm, db.GameOrm, db.InvitationOrm]:
+async def get_share(invitation_id) -> tuple[db.QuizOrm, db.GameOrm, db.QuizResultOrm, db.InvitationOrm]:
     async with db.Session() as session:
         stmt  = (
             update(db.InvitationOrm)
@@ -192,16 +192,17 @@ async def get_share(invitation_id) -> tuple[db.QuizOrm, db.GameOrm, db.Invitatio
             raise HTTPException(404, "Game not found.")
         
         stmt = (
-            select(db.QuizOrm, db.GameOrm)
+            select(db.QuizOrm, db.GameOrm, db.QuizResultOrm)
             .join(db.GameOrm, db.GameOrm.quiz_id == db.QuizOrm.id)
+            .join(db.QuizResultOrm, db.QuizResultOrm.id == db.GameOrm.quiz_result_id)
             .where(db.GameOrm.id == invitation.game_id)
         )
         q = await session.execute(stmt)
         await session.commit()
         
-        quiz, game = q.fetchone()
+        quiz, game, result = q.fetchone()
         
-        return quiz, game, invitation
+        return quiz, game, result, invitation
 
 async def update_invitation(id, **kwargs):
     async with db.Session() as session:
