@@ -56,13 +56,10 @@ _template = """
       }
       .score,
       .max-score {
-        letter-spacing: -0.03em;
+        letter-spacing: -0.07em;
         font-feature-settings: 'tnum' on, 'lnum' on;
       }
-      .separator {
-        margin-left: 9px;
-        margin-right: 10px;
-      }
+
     </style>
   </head>
   <body>
