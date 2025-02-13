@@ -32,7 +32,7 @@ class QuizResultCreate(BaseModel, db.RepositoryMixin):
             return cls(**json.loads(value))
         return value
     
-    async def create(self, picture: UploadFile):
+    async def create(self, picture: UploadFile | None):
         orm = await repository.create(**self.model_dump())
         if picture:
             extention = picture.filename.split(".")[-1]
