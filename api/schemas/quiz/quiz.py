@@ -9,6 +9,7 @@ from fastapi import UploadFile
 from ... import db
 from . import repository
 from ...adapters import s3
+from ...utils import result_to_png
 
 
 class QuizCreate(BaseModel, db.RepositoryMixin):
@@ -41,6 +42,12 @@ class QuizCreate(BaseModel, db.RepositoryMixin):
             file_path = f"img/quizes/{orm.id}.{extention}"
             url = await s3.upload_file(logo_pic.file, file_path)
             await self.db_update_fields_by_id(orm.id, logo_url = url)
+            
+            filebody = result_to_png.logo_to_og(url)
+            file_path = f"img/quizes/{orm.id}_og.{extention}"
+            url = await s3.upload_file(filebody, file_path)
+            
+            
 
 
 class QuizEdit(QuizCreate):
@@ -55,6 +62,10 @@ class QuizEdit(QuizCreate):
             file_path = f"img/quizes/{self.id}.{extention}"
             url = await s3.upload_file(logo_pic.file, file_path)
             self.logo_url = url
+            
+            filebody = result_to_png.logo_to_og(url)
+            file_path = f"img/quizes/{self.id}_og.{extention}"
+            url = await s3.upload_file(filebody, file_path)
         await self.db_update()
 
 

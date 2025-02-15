@@ -6,6 +6,34 @@ from jinja2 import Template
 
 from ..adapters import s3
 
+_template_logo = """
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        width: 1200px;
+        height: 630px;
+        display: flex;
+        position: relative;
+        margin: 0;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <img
+      src="{{background_url}}"
+    />
+  </body>
+</html>
+"""
 _template = """
 <!DOCTYPE html>
 <html lang="ru">
@@ -112,3 +140,12 @@ async def make(background_url: str, score, total_questions):
             os.remove(output)
         except OSError:
             pass
+
+def logo_to_og(logo_url: str) -> bytes:
+    template = Template(_template_logo).render(
+        background_url=logo_url,
+    )
+    options = {"format": "png", "quality": 100}
+    return imgkit.from_string(template, False, options=options)
+    
+  
