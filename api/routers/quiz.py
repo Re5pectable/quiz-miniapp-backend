@@ -10,7 +10,11 @@ router = APIRouter()
 
 @router.get("")
 async def get_quiz(id: UUID = Query()):
-    return await QuizView.db_get_or_none(id=id, is_deleted=False)
+    quiz = await QuizView.db_get_or_none(id=id, is_deleted=False)
+    return {
+        'quiz': quiz,
+        'questions_amount': await quiz.get_questions_amount()
+    }
 
 
 @router.get("/all")
