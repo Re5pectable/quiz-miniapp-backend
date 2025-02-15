@@ -97,8 +97,10 @@ class Game(BaseModel, db.RepositoryMixin):
 
     @classmethod
     async def get_share(cls, entity_id):
+        print("SHARING", entity_id)
         quiz = await repository.get_quiz(entity_id)
         if quiz:
+            print("GOT QUIZ")
             return HTMLResponse(f"""
             <!DOCTYPE html>
             <html lang="en">
