@@ -125,7 +125,7 @@ class Game(BaseModel, db.RepositoryMixin):
             </head>
             <body>
                 <script>
-                    # window.location.href = "https://t.me/KleyMediaBot/Quiz?startapp={quiz.id}"
+                    window.location.href = "https://t.me/KleyMediaBot/Quiz?startapp={quiz.id}"
                 </script>
             </body>
             </html>
