@@ -44,7 +44,7 @@ async def get_quiz(game_id) -> tuple[db.QuizOrm, int]:
         q = await session.execute(stmt)
         quiz = q.scalars().first()
         
-        stmt = select(func.count()).select_from(db.QuizQuestionOrm).filter_by(quiz_id=quiz.id)
+        stmt = select(func.count()).select_from(db.QuizQuestionOrm).where(db.QuizQuestionOrm.quiz_id==quiz.id, db.QuizQuestionOrm.is_deleted.is_not(True))
         q = await session.execute(stmt)
         questions_count = q.scalars().first()
         return quiz, questions_count
@@ -108,7 +108,8 @@ async def make_answer(game_id, question_id, answer_id) -> tuple[db.QuizQuestionA
             select(db.QuizQuestionOrm.id)
             .where(
                 db.QuizQuestionOrm.order > current_order,
-                db.QuizQuestionOrm.quiz_id == quiz_id
+                db.QuizQuestionOrm.quiz_id == quiz_id,
+                db.QuizQuestionOrm.is_deleted.is_not(True)
             )
             .order_by(db.QuizQuestionOrm.order.asc())
             .limit(1)
