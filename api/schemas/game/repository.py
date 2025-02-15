@@ -198,3 +198,9 @@ async def update_invitation(id, **kwargs):
         stmt = update(db.InvitationOrm).where(db.InvitationOrm.id == id).values(**kwargs)
         await session.execute(stmt)
         await session.commit()
+        
+async def get_quiz(quiz_id) -> db.QuizOrm | None:
+    async with db.Session() as session:
+        stmt = select(db.QuizOrm).where(db.QuizOrm.id == quiz_id, db.QuizOrm.is_deleted.is_not(True))
+        q = await session.execute(stmt)
+        return q.scalars().first()

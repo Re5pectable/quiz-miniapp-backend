@@ -3,8 +3,8 @@ from ..schemas.game import Game
 
 router = APIRouter()
 
-@router.get("/{invitation_id}")
+@router.get("/{entity_id}")
 async def get_share_page(
-    invitation_id: str
+    entity_id: str
 ):
-    return await Game.get_share(invitation_id)
+    return await Game.get_share(entity_id)

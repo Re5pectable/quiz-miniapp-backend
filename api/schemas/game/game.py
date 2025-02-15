@@ -96,8 +96,33 @@ class Game(BaseModel, db.RepositoryMixin):
         }
 
     @classmethod
-    async def get_share(cls, invitation_id):
-        quiz, game, result, invitation = await repository.get_share(invitation_id)
+    async def get_share(cls, entity_id):
+        quiz = await repository.get_quiz(entity_id)
+        if quiz:
+            return HTMLResponse(f"""
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta property="og:title" content="{quiz.header}" />
+                <meta property="og:site_name" content="Клей Тесты">
+                <meta property="og:description" content="{quiz.text}" />
+                <meta property="og:image" content="{quiz.logo_url}" />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://t.me/KleyMediaBot/Quiz?startapp={quiz.id}"/>
+                
+                <meta name="twitter:card" content="summary_large_image">
+                <meta name="twitter:image" content="{quiz.logo_url}">
+            </head>
+            <body>
+                <script>
+                    window.location.href = "https://t.me/KleyMediaBot/Quiz?startapp={quiz.id}"
+                </script>
+            </body>
+            </html>
+        """)
+        
+        quiz, game, result, invitation = await repository.get_share(entity_id)
         
         image_url = invitation.image_url
         if not image_url:
@@ -106,7 +131,7 @@ class Game(BaseModel, db.RepositoryMixin):
                 game.result['points'],
                 game.result['total_questions']
             )
-            await repository.update_invitation(invitation_id, image_url=image_url)
+            await repository.update_invitation(entity_id, image_url=image_url)
         
         html_content = f"""
             <!DOCTYPE html>
