@@ -46,8 +46,7 @@ class QuizCreate(BaseModel, db.RepositoryMixin):
             filebody = result_to_png.logo_to_og(url)
             file_path = f"img/quizes/{orm.id}_og.{extention}"
             url = await s3.upload_file(filebody, file_path)
-            
-            
+            await self.db_update_fields_by_id(orm.id, og_logo_url=url)
 
 
 class QuizEdit(QuizCreate):
@@ -66,6 +65,8 @@ class QuizEdit(QuizCreate):
             filebody = result_to_png.logo_to_og(url)
             file_path = f"img/quizes/{self.id}_og.{extention}"
             url = await s3.upload_file(filebody, file_path)
+            await self.db_update_fields(og_logo_url=url)
+            
         await self.db_update()
 
 

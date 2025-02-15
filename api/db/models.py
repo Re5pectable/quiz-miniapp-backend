@@ -20,6 +20,7 @@ class QuizOrm(Base):
     config = sa.Column(postgresql.JSONB())
     point_keys = sa.Column(postgresql.JSONB())
     logo_url = sa.Column(sa.String())
+    og_logo_url = sa.Column(sa.String())
     is_active = sa.Column(sa.Boolean(), default=False)
     is_deleted = sa.Column(sa.Boolean(), default=False)
 
