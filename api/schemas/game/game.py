@@ -97,10 +97,8 @@ class Game(BaseModel, db.RepositoryMixin):
 
     @classmethod
     async def get_share(cls, entity_id):
-        print("SHARING", entity_id)
         quiz = await repository.get_quiz(entity_id)
         if quiz:
-            print("GOT QUIZ")
             return HTMLResponse(f"""
             <!DOCTYPE html>
             <html lang="en">
@@ -109,12 +107,12 @@ class Game(BaseModel, db.RepositoryMixin):
                 <meta property="og:title" content="{quiz.header}" />
                 <meta property="og:site_name" content="Клей Тесты">
                 <meta property="og:description" content="{quiz.text}" />
-                <meta property="og:image" content="{quiz.logo_url}" />
+                <meta property="og:image" content="{quiz.og_logo_url}" />
                 <meta property="og:type" content="website" />
                 <meta property="og:url" content="https://t.me/KleyMediaBot/Quiz?startapp={quiz.id}"/>
                 
                 <meta name="twitter:card" content="summary_large_image">
-                <meta name="twitter:image" content="{quiz.logo_url}">
+                <meta name="twitter:image" content="{quiz.og_logo_url}">
             </head>
             <body>
                 <script>
