@@ -153,7 +153,7 @@ async def get_or_generate_result(game_id):
         q = await session.execute(stmt)
         total_points = q.scalars().first()
         
-        stmt = select(func.count()).select_from(db.QuizQuestionOrm).where(db.QuizQuestionOrm.quiz_id == quiz_id)
+        stmt = select(func.count()).select_from(db.QuizQuestionOrm).where(db.QuizQuestionOrm.quiz_id == quiz_id, db.QuizQuestionOrm.is_deleted.is_not(True))
         q = await session.execute(stmt)
         total_questions = q.scalars().first()
         
