@@ -9,6 +9,14 @@ from . import repository
 from ..quiz import QuizView
 from ...utils import result_to_png
 
+def is_uuid(str):
+    try:
+        UUID(str)
+        return True
+    except Exception:
+        return False
+    
+
 
 class Game(BaseModel, db.RepositoryMixin):
     id: UUID
@@ -97,8 +105,8 @@ class Game(BaseModel, db.RepositoryMixin):
 
     @classmethod
     async def get_share(cls, entity_id):
-        quiz = await repository.get_quiz(entity_id)
-        if quiz:
+        if is_uuid(entity_id):
+            quiz = await repository.get_quiz(entity_id)
             return HTMLResponse(f"""
             <!DOCTYPE html>
             <html lang="en">
