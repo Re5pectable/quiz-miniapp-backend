@@ -34,7 +34,7 @@ class QuizQuestionCreate(BaseModel, db.RepositoryMixin):
         orm = await self.db_create()
         if picture:
             extention = picture.filename.split(".")[-1]
-            file_path = f"question_answers_pics/{orm.id}.{extention}"
+            file_path = f"img/questions/{orm.id}.{extention}"
             url = await s3.upload_file(picture.file, file_path)
             await self.db_update_fields_by_id(orm.id, pic_url=url)
             
@@ -47,7 +47,7 @@ class QuizQuestionEdit(QuizQuestionCreate):
     async def update(self, picture: UploadFile | None = None):
         if picture:
             extention = picture.filename.split(".")[-1]
-            file_path = f"question_answers_pics/{self.id}.{extention}"
+            file_path = f"img/questions/{self.id}.{extention}"
             url = await s3.upload_file(picture.file, file_path)
             self.pic_url = url
             

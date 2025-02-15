@@ -100,7 +100,7 @@ async def make(background_url: str, score, total_questions):
         print(f">>> {output}: Start rendering")
         result = imgkit.from_string(template, False, options=options)
         print(f">>> {output}: End rendering")
-        file_path = f"invitation_img/{uuid4()}.png"
+        file_path = f"img/invitations/{uuid4()}.png"
         url = await s3.upload_file(result, file_path)
         print(f">>> {output}: Uploaded")
         return url
