@@ -33,22 +33,6 @@ async def create(quiz_id, session_id) -> UUID:
         await session.commit()
         return obj.id
 
-async def get_quiz(game_id) -> tuple[db.QuizOrm, int]:
-    async with db.Session() as session:
-        stmt = (
-            select(db.QuizOrm)
-            .select_from(db.GameOrm)
-            .join(db.QuizOrm, db.QuizOrm.id == db.GameOrm.quiz_id)
-            .where(db.GameOrm.id == game_id)
-        )
-        q = await session.execute(stmt)
-        quiz = q.scalars().first()
-        
-        stmt = select(func.count()).select_from(db.QuizQuestionOrm).where(db.QuizQuestionOrm.quiz_id==quiz.id, db.QuizQuestionOrm.is_deleted.is_not(True))
-        q = await session.execute(stmt)
-        questions_count = q.scalars().first()
-        return quiz, questions_count
-
     
 async def get_question(question_id):
     async with db.Session() as session:
