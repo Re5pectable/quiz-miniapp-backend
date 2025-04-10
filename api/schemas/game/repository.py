@@ -141,7 +141,7 @@ async def get_or_generate_result(game_id):
         q = await session.execute(stmt)
         total_questions = q.scalars().first()
         
-        stmt = select(db.QuizResultOrm).where(db.QuizResultOrm.quiz_id == quiz_id)
+        stmt = select(db.QuizResultOrm).where(db.QuizResultOrm.quiz_id == quiz_id, db.QuizResultOrm.is_deleted.is_not(True))
         q = await session.execute(stmt)
         results: list[db.QuizResultOrm] = q.scalars().all()
         
